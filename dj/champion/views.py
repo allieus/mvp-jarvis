@@ -11,7 +11,7 @@ class LinkListView(ListView):
     model = Link
 
 
-class LinkCreateView(LoginRequiredMixin, CreateView):
+class LinkCreateView(CreateView):
     model = Link
     form_class = LinkForm
     success_url = reverse_lazy('champion:index')

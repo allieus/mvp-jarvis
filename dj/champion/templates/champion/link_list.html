@@ -1,18 +1,23 @@
-<h1>MVP Docs Champion</h1>
+{% extends "champion/layout.html" %}
 
-<ul>
-{% for link in link_list %}
-    <li>
-        <a href="{{ link.tagged_url }}">
-            {{ link.tagged_url }}
-        </a>
-        <small>
-            {{ link.created_at|timesince }} ago.
-        </small>
-    </li>
-{% endfor %}
-</ul>
+{% block content %}
+    <a href="{% url 'champion:link_new' %}" class="btn btn-primary mb-3">New Link</a>
 
-<hr/>
-
-<a href="{% url 'champion:link_new' %}">New Link</a>
+    <table class="table table-bordered table-hover">
+        <tbody>
+            {% for link in link_list %}
+                <tr>
+                    <td>
+                        [{{ link.mvp_tag }}]
+                        <a href="{{ link.tagged_url }}">
+                            {{ link.tagged_url }}
+                        </a>
+                        <small>
+                            ({{ link.created_at|timesince }} ago.)
+                        </small>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock content %}
