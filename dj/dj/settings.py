@@ -90,6 +90,8 @@ else:
         }
     }
 
+DATABASE_CONNECTION_POOLING = env.bool("DATABASE_CONNECTION_POOLING", True)
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
