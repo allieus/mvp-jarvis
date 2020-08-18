@@ -1,0 +1,18 @@
+<h1>MVP Docs Champion</h1>
+
+<ul>
+{% for link in link_list %}
+    <li>
+        <a href="{{ link.tagged_url }}">
+            {{ link.tagged_url }}
+        </a>
+        <small>
+            {{ link.created_at|timesince }} ago.
+        </small>
+    </li>
+{% endfor %}
+</ul>
+
+<hr/>
+
+<a href="{% url 'champion:link_new' %}">New Link</a>
