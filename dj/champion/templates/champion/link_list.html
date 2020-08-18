@@ -10,7 +10,7 @@
                     <td>
                         [{{ link.mvp_tag }}]
                         <a href="{{ link.tagged_url }}">
-                            {{ link.tagged_url }}
+                            {{ link.label|default:link.tagged_url }}
                         </a>
                         <small>
                             ({{ link.created_at|timesince }} ago.)

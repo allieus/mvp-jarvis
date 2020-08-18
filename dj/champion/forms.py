@@ -10,7 +10,7 @@ class LinkForm(forms.ModelForm):
 
     class Meta:
         model = Link
-        fields = ['mvp_tag', 'url']
+        fields = ['mvp_tag', 'url', 'label']
 
     def clean_mvp_tag(self):
         mvp_tag = self.cleaned_data.get('mvp_tag')
