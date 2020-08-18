@@ -1,0 +1,5 @@
+azure-functions
+
+django~=3.1.0
+django-environ
+django-bootstrap4
