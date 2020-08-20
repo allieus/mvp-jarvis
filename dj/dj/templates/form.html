@@ -1,0 +1,13 @@
+{% extends "layout.html" %}
+{% load bootstrap4 %}
+
+{% block content %}
+    {% if form_title %}
+        <h4 class="display-4">{{ form_title }}</h4>
+    {% endif %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <input type="submit" class="btn btn-primary" value="Submit" />
+    </form>
+{% endblock content %}
