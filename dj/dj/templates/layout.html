@@ -21,6 +21,8 @@
             margin-bottom: 0;
         }
     </style>
+
+    {% block extra_head %}{% endblock %}
 </head>
 <body>
     <nav class="navbar navbar-expand-md navbar-dark bg-dark">
@@ -102,5 +104,8 @@
             </div>
         </footer>
     </div>
+
+    {% block extra_body %}
+    {% endblock %}
 </body>
 </html>

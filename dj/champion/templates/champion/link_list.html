@@ -35,9 +35,9 @@
                         </h5>
                         {# <p class="card-text"></p> #}
 
-                        <a href="{{ link.tagged_url }}" class="btn btn-link btn-sm">
-                            Share URL
-                        </a>
+                        <button data-clipboard-text="{{ link.tagged_url }}" class="btn btn-secondary btn-sm">
+                            Copy to clipboard
+                        </button>
                     </div>
                     <div class="card-footer">
                         <small class="text-muted" style="display: block;">
@@ -65,3 +65,19 @@
         {% endfor %}
     </div>
 {% endblock content %}
+
+{% block extra_body %}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js"></script>
+    <script>
+        $(function() {
+            var clipboard = new ClipboardJS('[data-clipboard-text]');
+            clipboard.on('success', function(e) {
+                e.clearSelection();
+                $(e.trigger).tooltip('hide').attr('data-original-title', 'Copied!').tooltip('show');
+                setTimeout(function() {
+                  $(e.trigger).tooltip('hide');
+                }, 1000);
+          });
+        });
+    </script>
+{% endblock %}
