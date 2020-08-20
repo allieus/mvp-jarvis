@@ -42,4 +42,5 @@ class ProfileForm(forms.ModelForm):
         if docs_tag:
             if Profile.objects.filter(docs_tag=docs_tag).exists():
                 raise forms.ValidationError(f'This is already registered.')
+            docs_tag = docs_tag.upper()
         return docs_tag
