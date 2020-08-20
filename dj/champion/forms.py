@@ -1,4 +1,6 @@
 import re
+from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
+
 from django import forms
 from .models import Link
 
@@ -22,7 +24,14 @@ class LinkForm(forms.ModelForm):
             if not is_valid:
                 raise forms.ValidationError('Invalid host.')
 
-        return url
+            parse_result = urlparse(url)
+            params = dict(parse_qsl(parse_result.query))
+            if 'fbclid' in params:
+                del params['fbclid']
+
+            url = urlunparse(parse_result._replace(query=urlencode(params)))
+
+        return re.sub(r'#/$', '', url)
 
     def clean(self):
         url = self.cleaned_data.get('url')
@@ -35,4 +44,4 @@ class LinkForm(forms.ModelForm):
 
     class Meta:
         model = Link
-        fields = ['url', 'label']
+        fields = ['url']
