@@ -37,9 +37,11 @@
                              {{ link.properties.description }}
                          </p>
 
-                        <button data-clipboard-text="{{ link.tagged_url }}" class="btn btn-secondary btn-sm">
-                            Copy to clipboard
-                        </button>
+                        {% if user == link.author %}
+                            <button data-clipboard-text="{{ link.tagged_url }}" class="btn btn-secondary btn-sm">
+                                Copy to clipboard
+                            </button>
+                        {% endif %}
                     </div>
                     <div class="card-footer">
                         <small class="text-muted" style="display: block;">
