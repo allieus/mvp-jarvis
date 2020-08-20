@@ -3,6 +3,7 @@ azure-functions
 django~=3.0.0
 django-environ
 django-bootstrap4
+jsonfield
 
 # https://github.com/ESSolutions/django-mssql-backend
 pyodbc

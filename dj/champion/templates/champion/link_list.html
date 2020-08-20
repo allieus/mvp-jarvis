@@ -26,14 +26,16 @@
         {% for link in link_list %}
             <div class="col-sm-6 col-md-4 mb-3">
                 <div class="card h-100">
-                    {# <img src="" class="card-img-top" alt="" /> #}
+                     <img src="{{ link.properties.image }}" class="card-img-top w-100" alt="{{ link.title }}" />
                     <div class="card-body">
                         <h5 class="card-title">
                             <a href="{{ link.tagged_url }}" class="text-dark">
-                                {{ link.label }}
+                                {{ link.title }}
                             </a>
                         </h5>
-                        {# <p class="card-text"></p> #}
+                         <p class="card-text">
+                             {{ link.properties.description }}
+                         </p>
 
                         <button data-clipboard-text="{{ link.tagged_url }}" class="btn btn-secondary btn-sm">
                             Copy to clipboard

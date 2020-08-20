@@ -6,6 +6,7 @@ from bs4 import BeautifulSoup
 from django.conf import settings
 from django.db import models
 from django.utils.functional import cached_property
+from jsonfield import JSONField as JSONTextField
 from requests import Timeout
 
 from accounts.models import Profile
@@ -17,9 +18,13 @@ logger = getLogger(__name__)
 class Link(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     url = models.URLField('Share Docs URL')
-    label = models.CharField(max_length=200, blank=True)
+    properties = JSONTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    @property
+    def title(self):
+        return self.properties.get('title')
 
     @cached_property
     def tagged_url(self):
@@ -31,7 +36,7 @@ class Link(models.Model):
 
         return urlunparse(parse_result._replace(query=urlencode(params)))
 
-    def update_label(self):
+    def update_properties(self):
         try:
             res = requests.get(self.url, timeout=3)
         except Timeout as e:
@@ -40,16 +45,21 @@ class Link(models.Model):
             if res.encoding == 'ISO-8859-1':
                 res.encoding = 'utf8'
             soup = BeautifulSoup(res.text, 'html.parser')
-            og_tag = soup.select_one('meta[property="og:title"]')
-            title_tag = soup.select_one('title')
-            if og_tag:
-                label = og_tag['content']
-            elif title_tag:
-                label = title_tag.text
-            else:
-                label = 'Not found title'
 
-            self.label = label
+            properties = {}
+            for tag in soup.select('meta[property^=og]'):
+                key = tag['property'].replace('og:', '')
+                value = tag['content']
+                properties[key] = value
+
+            if 'title' not in properties:
+                title_tag = soup.select_one('title')
+                if title_tag:
+                    properties['title'] = title_tag.text
+                else:
+                    properties['title'] = 'Not found title'
+
+            self.properties = properties
 
     class Meta:
         unique_together = [

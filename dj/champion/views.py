@@ -38,8 +38,7 @@ class LinkCreateView(DocsTagRequiredMixin, CreateView):
     def form_valid(self, form):
         link = form.save(commit=False)
         link.author = self.request.user
-        if not link.label:
-            link.update_label()
+        link.update_properties()
         return super().form_valid(form)
 
     def get_form_kwargs(self):
