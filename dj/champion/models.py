@@ -18,13 +18,10 @@ logger = getLogger(__name__)
 class Link(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     url = models.URLField('Share Docs URL')
+    title = models.CharField(max_length=200, blank=True)
     properties = JSONTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    @property
-    def title(self):
-        return self.properties.get('title')
 
     @cached_property
     def tagged_url(self):
@@ -59,6 +56,7 @@ class Link(models.Model):
                 else:
                     properties['title'] = 'Not found title'
 
+            self.title = properties.get('title', '')
             self.properties = properties
 
     class Meta:

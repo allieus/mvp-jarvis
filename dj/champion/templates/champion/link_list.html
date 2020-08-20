@@ -16,6 +16,13 @@
         <hr/>
     {% endif %}
 
+    <form action="" method="get" class="form-row mb-3">
+        <div class="col-sm-4">
+            <input type="text" name="q" value="{{ request.GET.q }}" class="form-control" />
+        </div>
+        <input type="submit" class="btn btn-primary" value="Search" />
+    </form>
+
     <div class="row">
         {% for link in link_list %}
             <div class="col-sm-6 col-md-4 mb-3">

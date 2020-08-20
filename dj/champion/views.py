@@ -15,6 +15,13 @@ class PublicLinkListView(ListView):
     model = Link
     paginate_by = 100
 
+    def get_queryset(self):
+        qs = super().get_queryset()
+        q = self.request.GET.get('q', '').strip()
+        if q:
+            qs = qs.filter(title__icontains=q)
+        return qs
+
 
 class LinkListView(ListView):
     model = Link
@@ -23,6 +30,9 @@ class LinkListView(ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         qs = qs.filter(author__profile__mvp_id=self.kwargs['mvp_id'])
+        q = self.request.GET.get('q', '').strip()
+        if q:
+            qs = qs.filter(title__icontains=q)
         return qs
 
     def get_context_data(self, *args, **kwargs):
