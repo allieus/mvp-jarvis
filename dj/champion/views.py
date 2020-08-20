@@ -1,3 +1,5 @@
+from django.contrib.auth import get_user_model
+from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, ListView
 from django.urls import reverse_lazy
 
@@ -6,8 +8,26 @@ from .mixins import DocsTagRequiredMixin
 from .models import Link
 
 
+User = get_user_model()
+
+
+class PublicLinkListView(ListView):
+    model = Link
+
+
 class LinkListView(ListView):
     model = Link
+    allow_empty = False
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.filter(author__profile__mvp_id=self.kwargs['mvp_id'])
+        return qs
+
+    def get_context_data(self, *args, **kwargs):
+        context_data = super().get_context_data(*args, **kwargs)
+        context_data['author'] = get_object_or_404(User, profile__mvp_id=self.kwargs['mvp_id'])
+        return context_data
 
 
 class LinkCreateView(DocsTagRequiredMixin, CreateView):

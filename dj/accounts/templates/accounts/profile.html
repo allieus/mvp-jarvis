@@ -1,8 +1,31 @@
 {% extends "accounts/layout.html" %}
 
 {% block content %}
-    <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit profile</a>
+    <h2>{{ user }}'s Profile</h2>
     <hr/>
 
-    profile
+    <a href="{% url 'profile_edit' %}" class="btn btn-primary mb-3">Edit profile</a>
+
+    {% if not user.profile %}
+        <div class="alert alert-danger">
+            You need enter mvp id and docs tag. <a href="{% url 'profile_edit' %}">Go</a>
+        </div>
+    {% else %}
+        <table class="table table-bordered table-hover">
+            <tbody>
+                <tr>
+                    <th>MVP id</th>
+                    <td>
+                        {{ user.profile.mvp_id }}
+                    </td>
+                </tr>
+                <tr>
+                    <th>Docs Champion Identification Tag</th>
+                    <td>
+                        {{ user.profile.docs_tag }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    {% endif %}
 {% endblock content %}

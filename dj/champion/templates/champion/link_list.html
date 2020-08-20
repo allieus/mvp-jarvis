@@ -1,23 +1,60 @@
 {% extends "champion/layout.html" %}
 
 {% block content %}
-    <a href="{% url 'champion:link_new' %}" class="btn btn-primary mb-3">New Link</a>
+    {% if author %}
+        <div class="alert alert-success">
+            <img src="{{ author.profile.public_photo_url }}" alt="{{ author }}"
+                 style="width: 52px; float: left;" class="mr-2" />
 
-    <table class="table table-bordered table-hover">
-        <tbody>
-            {% for link in link_list %}
-                <tr>
-                    <td>
-                        [{{ link.author }}]
-                        <a href="{{ link.tagged_url }}">
-                            {{ link.label|default:link.tagged_url }}
+            <h4 class="alert-heading">
+                {{ author.name|default:author.email }}'s Shared Links
+            </h4>
+
+            <p class="mb-0">
+                Shared {{ link_list.count }} links.
+            </p>
+        </div>
+    {% else %}
+        <h2>All Links</h2>
+
+        <div class="alert alert-success">
+            Shared {{ link_list.count }} links.
+        </div>
+    {% endif %}
+
+    <div class="row">
+        {% for link in link_list %}
+            <div class="col-sm-6 col-md-4 mb-3">
+                <div class="card h-100">
+                    {# <img src="" class="card-img-top" alt="" /> #}
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ link.tagged_url }}" class="text-dark">
+                                {{ link.label }}
+                            </a>
+                        </h5>
+                        {# <p class="card-text"></p> #}
+
+                        <a href="{{ link.tagged_url }}" class="btn btn-link btn-sm">
+                            Share URL
                         </a>
-                        <small>
-                            ({{ link.created_at|timesince }} ago.)
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted" style="display: block;">
+                            Last updated {{ link.updated_at|timesince }} ago
                         </small>
-                    </td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+
+                        {% if not author %}
+                            <a href="{% url 'champion:link_list_per_author' link.author.profile.mvp_id %}"
+                               class="text-muted">
+                                <small>
+                                    by {{ link.author.name|default:link.author.email }}
+                                </small>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock content %}
