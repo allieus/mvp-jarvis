@@ -47,6 +47,10 @@ class LinkForm(forms.ModelForm):
 
     def clean(self):
         url = self.cleaned_data.get('url')
+        locale = self.cleaned_data.get('locale')
+
+        if locale:
+            url = re.sub(r'(docs\.microsoft\.com)/([a-z]{2}-[a-z]{2})/', fr'\1/{locale}/', url)
 
         if self.author and url:
             if Link.objects.filter(author=self.author, url=url).exists():
@@ -58,8 +62,10 @@ class LinkForm(forms.ModelForm):
             if qs.exists():
                 raise forms.ValidationError('You have already registered URL.')
 
+        self.cleaned_data['url'] = url
+
         return self.cleaned_data
 
     class Meta:
         model = Link
-        fields = ['url']
+        fields = ['url', 'locale']

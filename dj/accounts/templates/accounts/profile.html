@@ -25,6 +25,12 @@
                         {{ user.profile.docs_tag|default:"EMPTY" }}
                     </td>
                 </tr>
+                <tr>
+                    <th>Prefer locale</th>
+                    <td>
+                        {{ user.profile.prefer_locale|default:"EMPTY" }}
+                    </td>
+                </tr>
             </tbody>
         </table>
     {% endif %}

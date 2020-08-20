@@ -55,6 +55,12 @@ class LinkCreateView(DocsTagRequiredMixin, CreateView):
         link.update_properties()
         return super().form_valid(form)
 
+    def get_initial(self):
+        initial = super().get_initial()
+        if self.request.user.profile.prefer_locale:
+            initial['locale'] = self.request.user.profile.prefer_locale
+        return initial
+
     def get_form_kwargs(self):
         kwargs = super().get_form_kwargs()
         kwargs['author'] = self.request.user

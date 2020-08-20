@@ -35,8 +35,9 @@
                             </a>
                         </h5>
                          <p class="card-text">
-                             {{ link.properties.description }}
-                         </p>
+                             <span class="badge badge-warning">{{ link.locale }}</span>
+                            {{ link.properties.description }}
+                        </p>
 
                         {% if user == link.author %}
                             <button data-clipboard-text="{{ link.tagged_url }}" class="btn btn-primary btn-sm">
