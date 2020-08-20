@@ -13,10 +13,12 @@ User = get_user_model()
 
 class PublicLinkListView(ListView):
     model = Link
+    paginate_by = 100
 
 
 class LinkListView(ListView):
     model = Link
+    paginate_by = 100
 
     def get_queryset(self):
         qs = super().get_queryset()
