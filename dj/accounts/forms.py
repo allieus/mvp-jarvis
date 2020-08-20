@@ -47,5 +47,4 @@ class ProfileForm(forms.ModelForm):
             'last_name',
             'mvp_id',
             'docs_tag',
-            'prefer_locale',
         ]

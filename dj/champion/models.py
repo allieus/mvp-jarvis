@@ -23,8 +23,6 @@ class Link(models.Model):
     properties = JSONTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    locale = models.CharField(max_length=6, choices=LocaleChoices.choices, blank=True,
-                              help_text="Option Field. If you do not specify locale, I don't change the locale in URL.")
 
     @cached_property
     def tagged_url(self):

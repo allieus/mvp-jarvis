@@ -12,7 +12,6 @@ class Profile(models.Model):
                               help_text='Please enter digits. ex) 1234567')
     docs_tag = models.CharField(max_length=15, validators=[RegexValidator(r'[a-zA-Z]{2,3}-[mM][vV][pP]-\d{4,7}')],
                                 blank=True, help_text='Docs Champion Identification Tag. ex) AZ-MVP-1234567')
-    prefer_locale = models.CharField(max_length=6, choices=LocaleChoices.choices, blank=True)
     bio = models.TextField(blank=True)
 
     @property

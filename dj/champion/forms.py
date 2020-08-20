@@ -43,14 +43,13 @@ class LinkForm(forms.ModelForm):
 
             url = urlunparse(parse_result._replace(query=urlencode(params)))
 
+            # remove locale
+            url = re.sub(r'(docs\.microsoft\.com)/([a-z]{2}-[a-z]{2})/', r'\1/', url)
+
         return re.sub(r'#/$', '', url)
 
     def clean(self):
         url = self.cleaned_data.get('url')
-        locale = self.cleaned_data.get('locale')
-
-        if locale:
-            url = re.sub(r'(docs\.microsoft\.com)/([a-z]{2}-[a-z]{2})/', fr'\1/{locale}/', url)
 
         if self.author and url:
             if Link.objects.filter(author=self.author, url=url).exists():
@@ -68,4 +67,4 @@ class LinkForm(forms.ModelForm):
 
     class Meta:
         model = Link
-        fields = ['url', 'locale']
+        fields = ['url']
