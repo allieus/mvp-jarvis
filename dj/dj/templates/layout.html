@@ -12,6 +12,7 @@
     <meta property="og:url" content="{{ request.build_absolute_uri }}" />
     <meta property="og:description" content="Assistant for Microsoft MVP" />
     <meta property="og:image" content="https://github.com/allieus/mvp-jarvis/raw/master/assets/profile.jpg" />
+    {% if FB_APP_ID %}<meta property="fb:app_id" content="{{ FB_APP_ID }}" />{% endif %}
 
     {% bootstrap_css %}
     {% bootstrap_jquery %}

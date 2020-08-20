@@ -16,6 +16,7 @@ https://mvp-jarvis.azurewebsites.net
 + `DATABASE_URL`
 + `GITHUB_CLIENT_ID`
 + `GITHUB_CLIENT_SECRET`
++ `FB_APP_ID`
 
 ## Deploy Command
 
