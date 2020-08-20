@@ -26,8 +26,15 @@ class LinkForm(forms.ModelForm):
 
             parse_result = urlparse(url)
             params = dict(parse_qsl(parse_result.query))
-            if 'fbclid' in params:
-                del params['fbclid']
+
+            params = {
+                key: value
+                for key, value in params.items()
+                if key.lower() not in (
+                    'fbclid'.lower(),
+                    'WT.mc_id'.lower(),
+                )
+            }
 
             url = urlunparse(parse_result._replace(query=urlencode(params)))
 
