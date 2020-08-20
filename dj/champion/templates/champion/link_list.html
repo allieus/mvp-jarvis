@@ -8,7 +8,7 @@
             {% for link in link_list %}
                 <tr>
                     <td>
-                        [{{ link.mvp_tag }}]
+                        [{{ link.author }}]
                         <a href="{{ link.tagged_url }}">
                             {{ link.label|default:link.tagged_url }}
                         </a>

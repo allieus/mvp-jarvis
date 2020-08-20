@@ -1,24 +1,34 @@
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
+from django.conf import settings
 from django.db import models
+from django.utils.functional import cached_property
+
+from accounts.models import Profile
 
 
 class Link(models.Model):
-    mvp_tag = models.CharField(max_length=20, db_index=True, help_text='ex) AI-MVP-1234567')
-    url = models.URLField()
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    url = models.URLField('Share Docs URL')
     label = models.CharField(max_length=200, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
-    @property
+    @cached_property
     def tagged_url(self):
+        profile: Profile = self.author.profile
+
         parse_result = urlparse(self.url)
         params = dict(parse_qsl(parse_result.query))
-        params['WT.mc_id'] = self.mvp_tag
+        params['WT.mc_id'] = profile.docs_tag
+
+        if 'fbclid' in params:
+            del params['fbclid']
+
         return urlunparse(parse_result._replace(query=urlencode(params)))
 
     class Meta:
         unique_together = [
-            ('mvp_tag', 'url'),
+            ('author', 'url'),
         ]
         ordering = ['-id']

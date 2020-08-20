@@ -8,16 +8,9 @@ class LinkForm(forms.ModelForm):
         r'^https?://docs.microsoft.com/.*',
     ]
 
-    class Meta:
-        model = Link
-        fields = ['mvp_tag', 'url', 'label']
-
-    def clean_mvp_tag(self):
-        mvp_tag = self.cleaned_data.get('mvp_tag')
-        if mvp_tag:
-            if not re.match(r'[a-zA-Z]{2}-MVP-\d{7}', mvp_tag):
-                raise forms.ValidationError('Invalid Identification tag.')
-        return mvp_tag
+    def __init__(self, *args, **kwargs):
+        self.author = kwargs.pop('author')
+        super().__init__(*args, **kwargs)
 
     def clean_url(self):
         url = self.cleaned_data.get('url')
@@ -32,11 +25,14 @@ class LinkForm(forms.ModelForm):
         return url
 
     def clean(self):
-        mvp_tag = self.cleaned_data.get('mvp_tag')
         url = self.cleaned_data.get('url')
 
-        if mvp_tag and url:
-            if Link.objects.filter(mvp_tag=mvp_tag, url=url).exists():
-                raise forms.ValidationError("Already exists Link.")
+        if self.author and url:
+            if Link.objects.filter(author=self.author, url=url).exists():
+                raise forms.ValidationError("You have already registered URL.")
 
         return self.cleaned_data
+
+    class Meta:
+        model = Link
+        fields = ['url', 'label']
