@@ -17,12 +17,17 @@ class LinkForm(forms.ModelForm):
     def clean_url(self):
         url = self.cleaned_data.get('url')
         if url:
+            # Ensure https:// scheme.
+            if not url.startswith(('http://', 'https://')):
+                url = 'https://' + url
+            url = re.sub(r'^http://', 'https://', url)
+
             is_valid = any(
                 re.match(url_pattern, url)
                 for url_pattern in self.valid_url_patterns
             )
             if not is_valid:
-                raise forms.ValidationError('Invalid host.')
+                raise forms.ValidationError('Please enter url in docs.microsoft.com.')
 
             parse_result = urlparse(url)
             params = dict(parse_qsl(parse_result.query))

@@ -1,7 +1,7 @@
 {% extends "accounts/layout.html" %}
 
 {% block content %}
-    <h2>{{ user }}'s Profile</h2>
+    <h2>{{ user.get_full_name|default:user.username }}'s Profile</h2>
     <hr/>
 
     <a href="{% url 'profile_edit' %}" class="btn btn-primary mb-3">Edit profile</a>

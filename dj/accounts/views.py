@@ -1,28 +1,12 @@
-from django.conf import settings
-from django.contrib import messages
-from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView, LogoutView
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import UpdateView
 
-from accounts.forms import SignupForm, ProfileForm
+from accounts.forms import ProfileForm
 from accounts.models import Profile
-
-
-class SignupView(CreateView):
-    form_class = SignupForm
-    extra_context = {'form_title': 'Signup'}
-    template_name = 'form.html'
-    success_url = reverse_lazy('profile_edit')
-
-    def form_valid(self, form):
-        response = super().form_valid(form)
-        auth_login(self.request, self.object)
-        messages.info(self.request, 'You are automatically logged in. Please enter your mvp id and docs tag.')
-        return response
 
 
 login = LoginView.as_view(
@@ -32,7 +16,7 @@ login = LoginView.as_view(
 
 
 logout = LogoutView.as_view(
-    next_page=settings.LOGIN_URL,
+    next_page=reverse_lazy('root'),
 )
 
 

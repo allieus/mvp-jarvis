@@ -7,7 +7,7 @@
 {#                 style="width: 52px; float: left;" class="mr-2" />#}
 
             <h4 class="alert-heading">
-                {{ author.name|default:author.email }}'s Shared Links
+                {{ author.get_full_name|default:author.username }}'s Shared Links
             </h4>
 
             <p class="mb-0">
@@ -50,7 +50,7 @@
                             <a href="{% url 'champion:link_list_per_author' link.author.profile.mvp_id %}"
                                class="text-muted">
                                 <small>
-                                    by {{ link.author.name|default:link.author.email }}
+                                    by {{ link.author.get_full_name|default:link.author.email }}
                                 </small>
                             </a>
                         {% endif %}

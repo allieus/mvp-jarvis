@@ -5,6 +5,8 @@ django-environ
 django-bootstrap4
 jsonfield
 
+django-allauth
+
 # https://github.com/ESSolutions/django-mssql-backend
 pyodbc
 django-mssql-backend
