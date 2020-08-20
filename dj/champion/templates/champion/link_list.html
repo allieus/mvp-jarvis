@@ -39,9 +39,11 @@
                          </p>
 
                         {% if user == link.author %}
-                            <button data-clipboard-text="{{ link.tagged_url }}" class="btn btn-secondary btn-sm">
+                            <button data-clipboard-text="{{ link.tagged_url }}" class="btn btn-primary btn-sm">
                                 Copy to clipboard
                             </button>
+                            <a href="{% url 'champion:link_edit' link.pk %}" class="btn btn-warning btn-sm">Edit</a>
+                            <a href="{% url 'champion:link_delete' link.pk %}" class="btn btn-danger btn-sm">Delete</a>
                         {% endif %}
                     </div>
                     <div class="card-footer">

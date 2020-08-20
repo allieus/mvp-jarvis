@@ -1,0 +1,21 @@
+{% extends "champion/layout.html" %}
+
+{% block content %}
+    <h5>Are you sure delete?</h5>
+
+    <div class="alert alert-info">
+        <h4 class="link-heading">{{ link.title }}</h4>
+        <hr />
+        <p>
+            {{ link.properties.description }}
+        </p>
+        <p class="mb-0">
+            {{ link.tagged_url }}
+        </p>
+    </div>
+
+    <form action="" method="post" autocomplete="off" novalidate>
+        {% csrf_token %}
+        <input type="submit" class="btn btn-danger" value="I'm sure~!" />
+    </form>
+{% endblock %}

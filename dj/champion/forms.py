@@ -11,7 +11,7 @@ class LinkForm(forms.ModelForm):
     ]
 
     def __init__(self, *args, **kwargs):
-        self.author = kwargs.pop('author')
+        self.author = kwargs.pop('author', None)
         super().__init__(*args, **kwargs)
 
     def clean_url(self):
@@ -50,7 +50,13 @@ class LinkForm(forms.ModelForm):
 
         if self.author and url:
             if Link.objects.filter(author=self.author, url=url).exists():
-                raise forms.ValidationError("You have already registered URL.")
+                raise forms.ValidationError('You have already registered URL.')
+        elif self.instance and url:
+            qs = Link.objects \
+                .filter(author=self.instance.author, url=url) \
+                .exclude(pk=self.instance.pk)
+            if qs.exists():
+                raise forms.ValidationError('You have already registered URL.')
 
         return self.cleaned_data
 

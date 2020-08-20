@@ -1,6 +1,8 @@
+from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView
 from django.urls import reverse_lazy
 
 from .forms import LinkForm
@@ -57,3 +59,38 @@ class LinkCreateView(DocsTagRequiredMixin, CreateView):
         kwargs = super().get_form_kwargs()
         kwargs['author'] = self.request.user
         return kwargs
+
+    def get_success_url(self):
+        messages.success(self.request, f'Link was created successfully.')
+        return super().get_success_url()
+
+
+class LinkUpdateView(DocsTagRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Link
+    form_class = LinkForm
+    template_name = 'form.html'
+    success_url = reverse_lazy('champion:index')
+
+    def test_func(self):
+        return self.request.user == self.get_object().author
+
+    def form_valid(self, form):
+        link = form.save(commit=False)
+        link.update_properties()
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        messages.success(self.request, f'Link was updated successfully.')
+        return super().get_success_url()
+
+
+class LinkDeleteView(DocsTagRequiredMixin, UserPassesTestMixin, DeleteView):
+    model = Link
+    success_url = reverse_lazy('champion:index')
+
+    def test_func(self):
+        return self.request.user == self.get_object().author
+
+    def get_success_url(self):
+        messages.success(self.request, f'Link was deleted successfully.')
+        return super().get_success_url()
