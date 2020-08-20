@@ -5,7 +5,7 @@
     {% if form_title %}
         <h4 class="display-4">{{ form_title }}</h4>
     {% endif %}
-    <form action="" method="post" enctype="multipart/form-data" autocomplete="off">
+    <form action="" method="post" enctype="multipart/form-data" autocomplete="off" novalidate>
         {% csrf_token %}
         {% bootstrap_form form %}
         <input type="submit" class="btn btn-primary" value="Submit" />

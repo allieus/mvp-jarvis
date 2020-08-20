@@ -17,7 +17,6 @@ class PublicLinkListView(ListView):
 
 class LinkListView(ListView):
     model = Link
-    allow_empty = False
 
     def get_queryset(self):
         qs = super().get_queryset()

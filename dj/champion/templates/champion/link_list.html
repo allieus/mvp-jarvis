@@ -3,8 +3,8 @@
 {% block content %}
     {% if author %}
         <div class="alert alert-success">
-            <img src="{{ author.profile.public_photo_url }}" alt="{{ author }}"
-                 style="width: 52px; float: left;" class="mr-2" />
+{#            <img src="{{ author.profile.public_photo_url }}" alt="{{ author }}"#}
+{#                 style="width: 52px; float: left;" class="mr-2" />#}
 
             <h4 class="alert-heading">
                 {{ author.name|default:author.email }}'s Shared Links
@@ -55,6 +55,13 @@
                     </div>
                 </div>
             </div>
+        {% empty %}
+            <div class="col-sm-12">
+                <div class="alert alert-info">
+                    Empty List
+                </div>
+            </div>
+
         {% endfor %}
     </div>
 {% endblock content %}

@@ -7,6 +7,7 @@ from .models import User, Profile
 class SignupForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = User
+        fields = ('username', 'name')
         field_classes = {'username': EmailField}
         help_texts = {
             'username': 'Please enter your email address as username.',

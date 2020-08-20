@@ -16,13 +16,13 @@
                 <tr>
                     <th>MVP id</th>
                     <td>
-                        {{ user.profile.mvp_id }}
+                        {{ user.profile.mvp_id|default:"EMPTY" }}
                     </td>
                 </tr>
                 <tr>
                     <th>Docs Champion Identification Tag</th>
                     <td>
-                        {{ user.profile.docs_tag }}
+                        {{ user.profile.docs_tag|default:"EMPTY" }}
                     </td>
                 </tr>
             </tbody>

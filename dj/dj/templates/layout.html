@@ -44,6 +44,12 @@
                     <a class="nav-link active" href="{% url 'champion:link_new' %}">New Link</a>
                 </li>
 
+                {% if user.is_authenticated and request.user.profile.mvp_id%}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'champion:link_list_per_author' request.user.profile.mvp_id %}">My Links</a>
+                    </li>
+                {% endif %}
+
                 {% if not user.is_authenticated %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login' %}">Login</a>
