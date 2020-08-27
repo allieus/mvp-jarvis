@@ -1,7 +1,9 @@
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, LogoutView
-from django.shortcuts import render
+from django.contrib.auth.views import LogoutView
+from django.http import Http404
+from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import UpdateView
 
@@ -9,10 +11,10 @@ from accounts.forms import ProfileForm
 from accounts.models import Profile
 
 
-login = LoginView.as_view(
-    extra_context={'form_title': 'Login'},
-    template_name='form.html',
-)
+def login(request):
+    if 'allauth.socialaccount.providers.github' in settings.INSTALLED_APPS:
+        return redirect('/accounts/github/login/')
+    raise Http404
 
 
 logout = LogoutView.as_view(
