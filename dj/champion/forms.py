@@ -6,9 +6,23 @@ from .models import Link
 
 
 class LinkForm(forms.ModelForm):
-    valid_url_patterns = [
-        r'^https?://docs.microsoft.com/.*',
-    ]
+    allowed_host_list = list(map(
+        lambda host: host.replace('.', r'\.'), [
+            'docs.microsoft.com',
+            'social.technet.microsoft.com',
+            'azure.microsoft.com',
+            'techcommunity.microsoft.com',
+            'social.msdn.microsoft.com',
+            'devblogs.microsoft.com',
+            'developer.microsoft.com',
+            'channel9.msdn.com',
+            'gallery.technet.microsoft.com',
+            'cloudblogs.microsoft.com',
+            'technet.microsoft.com',
+            'msdn.microsoft.com',
+            'blogs.msdn.microsoft.com',
+            'blogs.technet.microsoft.com',
+        ]))
 
     def __init__(self, *args, **kwargs):
         self.author = kwargs.pop('author', None)
@@ -23,11 +37,11 @@ class LinkForm(forms.ModelForm):
             url = re.sub(r'^http://', 'https://', url)
 
             is_valid = any(
-                re.match(url_pattern, url)
-                for url_pattern in self.valid_url_patterns
+                re.match(r'https?://' + url_pattern + '/.*', url)
+                for url_pattern in self.allowed_host_list
             )
             if not is_valid:
-                raise forms.ValidationError('Please enter url in docs.microsoft.com.')
+                raise forms.ValidationError('Invalid host in url.')
 
             parse_result = urlparse(url)
             params = dict(parse_qsl(parse_result.query))
@@ -44,7 +58,11 @@ class LinkForm(forms.ModelForm):
             url = urlunparse(parse_result._replace(query=urlencode(params)))
 
             # remove locale
-            url = re.sub(r'(docs\.microsoft\.com)/([a-z]{2}-[a-z]{2})/', r'\1/', url)
+            for host in self.allowed_host_list:
+                pattern = '(' + host + ')' + r'/([a-z]{2}-[a-z]{2})/'
+                if re.search(pattern, url):
+                    url = re.sub(pattern, r'\1/', url)
+                    break
 
         return re.sub(r'#/$', '', url)
 
