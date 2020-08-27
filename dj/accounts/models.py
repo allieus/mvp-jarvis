@@ -10,7 +10,7 @@ class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     mvp_id = models.CharField(max_length=7, validators=[RegexValidator(r'\d{4,7}')], blank=True,
                               help_text='Please enter digits. ex) 1234567')
-    docs_tag = models.CharField(max_length=15, validators=[RegexValidator(r'[a-zA-Z]{2,3}-[mM][vV][pP]-\d{4,7}')],
+    docs_tag = models.CharField(max_length=20, validators=[RegexValidator(r'[a-zA-Z]{2,5}-[mM][vV][pP]-\d{4,7}')],
                                 blank=True, help_text='Docs Champion Identification Tag. ex) AZ-MVP-1234567')
     bio = models.TextField(blank=True)
 
