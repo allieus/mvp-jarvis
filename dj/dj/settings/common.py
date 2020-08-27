@@ -16,7 +16,7 @@ from environ import Env
 env = Env()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
-BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
+BASE_DIR = Path(__file__).resolve(strict=True).parent.parent.parent
 
 
 # Quick-start development settings - unsuitable for production
@@ -39,13 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.sites',
     'django.contrib.staticfiles',
     'bootstrap4',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.github',
     'accounts',
     'champion',
 ]
@@ -101,27 +96,6 @@ else:
 
 
 DATABASE_CONNECTION_POOLING = env.bool("DATABASE_CONNECTION_POOLING", True)
-
-AUTHENTICATION_BACKENDS = [
-    'django.contrib.auth.backends.ModelBackend',
-    'allauth.account.auth_backends.AuthenticationBackend',
-]
-
-SITE_ID = 1
-
-SOCIALACCOUNT_PROVIDERS = {
-    'github': {
-        'SCOPE': [
-            'read:user',
-        ],
-        'APP': {
-            'client_id': env.str('GITHUB_CLIENT_ID'),
-            'secret': env.str('GITHUB_CLIENT_SECRET'),
-            'key': ''
-        }
-    },
-}
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
