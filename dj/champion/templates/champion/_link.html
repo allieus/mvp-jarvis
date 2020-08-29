@@ -1,0 +1,48 @@
+<div class="card mb-3">
+    <div class="card-body">
+        <h5 class="card-title">
+            <a href="{{ link.tagged_url }}" class="text-dark">
+                <img src="{{ link.properties.image }}" alt="{{ link.title }}" class="thumb" />
+                {{ link.title }}
+            </a>
+        </h5>
+        <p class="card-text">
+            {{ link.properties.description }}
+        </p>
+
+        <div class="row no-gutters">
+            <div class="col-sm-6 text-muted">
+                <a href="{{ link.get_absolute_url }}">
+                    <small class="text-muted">Last updated {{ link.updated_at|timesince }} ago</small>
+                </a>
+
+                {% if not author %}
+                    <a href="{% url 'champion:link_list_per_author' link.author.profile.mvp_id %}"
+                       class="text-muted">
+                        <small>
+                            by {{ link.author.get_full_name|default:link.author.email }}
+                        </small>
+                    </a>
+                {% endif %}
+            </div>
+            <div class="col-sm-6 text-right">
+                {% if user == link.author %}
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-sm btn-primary" data-clipboard-text="{{ link.tagged_url }}">
+                            Copy to clipboard
+                        </button>
+                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle dropdown-toggle-split"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a href="{% url 'champion:link_edit' link.pk %}" class="dropdown-item">Edit</a>
+                            <a href="{% url 'champion:link_delete' link.pk %}" class="dropdown-item">Delete</a>
+                            {# <div class="dropdown-divider"></div> #}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -5,6 +5,7 @@ import requests
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils.functional import cached_property
 from jsonfield import JSONField as JSONTextField
 from requests import Timeout
@@ -23,6 +24,12 @@ class Link(models.Model):
     properties = JSONTextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return self.title
+
+    def get_absolute_url(self):
+        return reverse('champion:link_detail', args=[self.pk])
 
     @cached_property
     def tagged_url(self):

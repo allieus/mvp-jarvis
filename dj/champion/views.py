@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin
 from django.shortcuts import get_object_or_404
-from django.views.generic import CreateView, ListView, UpdateView, DeleteView
+from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
 
 from .forms import LinkForm
@@ -41,6 +41,10 @@ class LinkListView(ListView):
         context_data = super().get_context_data(*args, **kwargs)
         context_data['author'] = get_object_or_404(User, profile__mvp_id=self.kwargs['mvp_id'])
         return context_data
+
+
+class LinkDetailView(DetailView):
+    model = Link
 
 
 class LinkCreateView(DocsTagRequiredMixin, CreateView):
