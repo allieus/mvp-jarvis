@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'opencensus.ext.django.middleware.OpencensusMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -134,3 +135,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+OPENCENSUS = {
+    'TRACE': {
+        'SAMPLER': 'opencensus.trace.samplers.ProbabilitySampler(rate=1)',
+        'EXPORTER': f'''opencensus.ext.azure.trace_exporter.AzureExporter(
+            connection_string="{env.str('APPLICATIONINSIGHTS_CONNECTION_STRING')}"
+        )''',
+        # 'BLACKLIST_PATHS': ['https://example.com'],
+    },
+}
