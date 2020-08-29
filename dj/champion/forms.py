@@ -2,6 +2,9 @@ import re
 from urllib.parse import parse_qsl, urlencode, urlparse, urlunparse
 
 from django import forms
+from django.shortcuts import resolve_url
+from django.utils.safestring import mark_safe
+
 from .models import Link
 
 
@@ -68,16 +71,20 @@ class LinkForm(forms.ModelForm):
 
     def clean(self):
         url = self.cleaned_data.get('url')
+        link = None
 
         if self.author and url:
-            if Link.objects.filter(author=self.author, url=url).exists():
-                raise forms.ValidationError('You have already registered URL.')
+            link = Link.objects.filter(author=self.author, url=url).first()
         elif self.instance and url:
-            qs = Link.objects \
+            link = Link.objects \
                 .filter(author=self.instance.author, url=url) \
-                .exclude(pk=self.instance.pk)
-            if qs.exists():
-                raise forms.ValidationError('You have already registered URL.')
+                .exclude(pk=self.instance.pk) \
+                .first()
+
+        if link is not None:
+            raise forms.ValidationError(
+                mark_safe(f'You have already registered URL.<br/>Go <a href="{resolve_url(link)}">{link}</a>')
+            )
 
         self.cleaned_data['url'] = url
 
