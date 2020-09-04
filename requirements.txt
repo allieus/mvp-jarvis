@@ -14,5 +14,6 @@ django-mssql-backend
 requests
 beautifulsoup4
 
+sentry-sdk
 opencensus-ext-azure
 opencensus-ext-django
