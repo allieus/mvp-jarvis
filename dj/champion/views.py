@@ -1,6 +1,8 @@
+import requests
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import UserPassesTestMixin
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import CreateView, ListView, UpdateView, DeleteView, DetailView
 from django.urls import reverse_lazy
@@ -98,3 +100,8 @@ class LinkDeleteView(DocsTagRequiredMixin, UserPassesTestMixin, DeleteView):
     def get_success_url(self):
         messages.success(self.request, f'Link was deleted successfully.')
         return super().get_success_url()
+
+
+def public_ip(request):
+    res = requests.get('https://api.ipify.org?format=json')
+    return JsonResponse(res.json())

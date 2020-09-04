@@ -10,4 +10,5 @@ urlpatterns = [
     path('link/<int:pk>/edit/', views.LinkUpdateView.as_view(), name='link_edit'),
     path('link/<int:pk>/delete/', views.LinkDeleteView.as_view(), name='link_delete'),
     re_path(r'authors/(?P<mvp_id>\d{7})/$', views.LinkListView.as_view(), name='link_list_per_author'),
+    path('ip/', views.public_ip),
 ]
