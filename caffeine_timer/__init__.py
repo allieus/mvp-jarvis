@@ -1,14 +1,17 @@
-import datetime
+import sys
 import logging
 
 import azure.functions as func
+import django
+
+
+sys.path.insert(0, '..')
+django.setup()
 
 
 def main(mytimer: func.TimerRequest) -> None:
-    utc_timestamp = datetime.datetime.utcnow().replace(
-        tzinfo=datetime.timezone.utc).isoformat()
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+    user_count = User.objects.all().count()
 
-    if mytimer.past_due:
-        logging.info('The timer is past due!')
-
-    logging.info('Python timer trigger function ran at %s', utc_timestamp)
+    logging.info(f'Python timer trigger function ran : user_count = {user_count}')
